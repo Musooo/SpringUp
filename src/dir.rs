@@ -2,13 +2,13 @@ use std::fs::DirBuilder;
 
 #[cfg(any(target_os = "linux", target_os = "macos"))]
 pub fn dir_path(groud_id: String, artifact_id: String, dir: &str) -> String {
-    format!("{}/{}/{}/{}", "src/main/java", groud_id, artifact_id, dir)
+    format!("{}/{}/{}/{}/", "src/main/java", groud_id, artifact_id, dir)
 }
 
 #[cfg(target_os = "windows")]
 pub fn dir_path(groud_id: String, artifact_id: String, dir: &str) -> String {
     format!(
-        "{}\\{}\\{}\\{}",
+        "{}\\{}\\{}\\{}\\",
         "src\\main\\java", groud_id, artifact_id, dir
     )
 }

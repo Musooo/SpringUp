@@ -2,6 +2,7 @@ use std::env;
 mod pom;
 use std::fs;
 mod dir;
+mod javafile;
 
 macro_rules! conf_file {
     () => {
@@ -39,13 +40,7 @@ fn main() {
             "-d" => {
                 println!("create dir");
                 let (group_id, artifact_id) = read_saka();
-                let group_ids: String;
-                if cfg!(target_os = "linux") || cfg!(target_os = "macos") {
-                    group_ids = group_id.clone().replace(".", "/");
-                } else {
-                    group_ids = group_id.clone().replace(".", "\\");
-                }
-
+                let group_ids: String = javafile::get_group_id_slash(group_id);
                 dir::create_dir(group_ids, artifact_id);
             }
             "-s" => {
@@ -58,6 +53,8 @@ fn main() {
             }
             _ => {
                 println!("{}", argv[i]);
+                let (group_id, artifact_id) = read_saka();
+                javafile::create_files(group_id, artifact_id, argv[i].clone());
             }
         }
 
