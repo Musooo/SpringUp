@@ -1,5 +1,22 @@
 use std::env;
 mod pom;
+use std::fs;
+mod dir;
+
+macro_rules! conf_file {
+    () => {
+        "prova.saka"
+    };
+}
+
+fn read_saka() -> (String, String) {
+    let saka_content: Vec<String> = fs::read_to_string(conf_file!())
+        .unwrap()
+        .lines()
+        .map(String::from)
+        .collect();
+    (saka_content[0].clone(), saka_content[1].clone())
+}
 
 fn main() {
     let argv: Vec<String> = env::args().collect();
@@ -17,17 +34,26 @@ fn main() {
             }
             "-a" => {
                 println!("pom parser");
-                pom::read_from_pom();
+                let _ = pom::read_from_pom(conf_file!());
             }
             "-d" => {
                 println!("create dir");
+                let (group_id, artifact_id) = read_saka();
+                let group_ids: String;
+                if cfg!(target_os = "linux") || cfg!(target_os = "macos") {
+                    group_ids = group_id.clone().replace(".", "/");
+                } else {
+                    group_ids = group_id.clone().replace(".", "\\");
+                }
+
+                dir::create_dir(group_ids, artifact_id);
             }
             "-s" => {
                 if argv.len() < i + 2 {
                     println!("not enough args for -s");
                     return;
                 }
-                pom::set_ids(argv[i + 1].clone(), argv[i + 2].clone());
+                let _ = pom::set_ids(argv[i + 1].clone(), argv[i + 2].clone(), conf_file!());
                 i += 2;
             }
             _ => {
