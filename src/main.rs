@@ -3,6 +3,7 @@ mod pom;
 use std::fs;
 mod dir;
 mod javafile;
+mod sqlf;
 
 macro_rules! conf_file {
     () => {
@@ -50,6 +51,12 @@ fn main() {
                 }
                 let _ = pom::set_ids(argv[i + 1].clone(), argv[i + 2].clone(), conf_file!());
                 i += 2;
+            }
+            "-f" => {
+                let type_tab: Vec<String>;
+                type_tab = sqlf::read_from_sql(String::from("init.sql"), argv[i + 1].clone());
+                println!("{}", type_tab[0]);
+                i += 1;
             }
             _ => {
                 println!("{}", argv[i]);
