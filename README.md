@@ -1,4 +1,4 @@
-# SP-Boot-utils-rust
+# SpringUp
 
 ## Still working progress project !!!
 
