@@ -13,15 +13,14 @@ pub fn get_group_id_slash(group_id: String) -> String {
 }
 
 pub fn create_files(group_id: String, artifact_id: String, name: String) {
-    let group_ids: String = get_group_id_slash(group_id);
+    let group_ids: String = get_group_id_slash(group_id.clone());
     fs::write(
         format!(
             "{}{}.java",
             dir_path(group_ids.clone(), artifact_id.clone(), "model"),
             name
         ),
-        "",
-    )
+        format!("package {}.{}.model;\n\nimport jakarta.persistence.Entity;\nimport jakarta.persistence.Id;\nimport jakarta.persistence.Table;\nimport lombok.AllArgsConstructor;\nimport lombok.Getter;\nimport lombok.NoArgsConstructor;\nimport lombok.Setter;\n\n@Entity\n@Getter\n@Setter\n@AllArgsConstructor\n@NoArgsConstructor\n@Table(name = \"{}\")\n\npublic class {} {{}}", group_id, artifact_id, name, name),)
     .expect("fallito creare il file model");
     fs::write(
         format!(
@@ -29,7 +28,7 @@ pub fn create_files(group_id: String, artifact_id: String, name: String) {
             dir_path(group_ids.clone(), artifact_id.clone(), "service"),
             name
         ),
-        "",
+        format!("package {}.{}.service;\n\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\nimport {}.{}.model.{};\nimport {}.{}.repository.{}Repository;\n\nimport java.util.List;\n\n@Service\npublic class {}Service {{\n   @Autowired\n   private {}Repository {}Repository;\n\n   public List<{}> findAll() {{\n      return {}Repository.findAll();\n   }}\n\n   public {} findById(Tipo id) {{\n      return {}Repository.findById(id).orElse(null);\n   }}\n\n   public {} save({} {}) {{\n      return {}Repository.save({});\n   }}\n\n}}", group_id, artifact_id, group_id, artifact_id, name, group_id, artifact_id, name, name, name, name.to_lowercase(), name, name.to_lowercase(), name, name.to_lowercase(), name, name, name.to_lowercase(), name.to_lowercase(), name.to_lowercase()),
     )
     .expect("fallito creare il file model");
     fs::write(
@@ -38,7 +37,7 @@ pub fn create_files(group_id: String, artifact_id: String, name: String) {
             dir_path(group_ids.clone(), artifact_id.clone(), "repository"),
             name
         ),
-        "",
+        format!("package {}.{}.repository;\n\nimport org.springframework.data.jpa.repository.JpaRepository;\nimport org.springframework.stereotype.Repository;\nimport {}.{}.model.{};\n@Repository\npublic interface {}Repository extends JpaRepository<{}, TipoId> {{}}", group_id, artifact_id, group_id, artifact_id, name, name, name),
     )
     .expect("fallito creare il file model");
     return;
