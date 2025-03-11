@@ -53,10 +53,22 @@ fn main() {
                 i += 2;
             }
             "-f" => {
-                let type_tab: Vec<String>;
+                let mut type_tab: Vec<String>;
                 type_tab =
                     sqlf::read_from_sql(String::from("init.sql"), argv[i + 1].to_lowercase());
-                //println!("{}", type_tab[0]);
+
+                for i in 0..type_tab.len() {
+                    if type_tab[i].contains(&type_tab[type_tab.len() - 1]) {
+                        if i == 0 {
+                            type_tab.insert(0, String::from("   @Id\n"));
+                            break;
+                        }
+                        type_tab.insert(i - 1, String::from("   @Id\n"));
+                    }
+                }
+
+                type_tab.pop();
+
                 let text: String = type_tab.into_iter().collect();
                 let (group_id, artifact_id) = read_saka();
                 javafile::create_files(&group_id, &artifact_id, argv[i + 1].clone(), text);

@@ -24,9 +24,6 @@ pub fn read_from_sql(file_name: String, table_name: String) -> Vec<String> {
         i += 1;
     }
 
-    //let prova = translate_sql_to_java_type(sql_fields[0].clone());
-    //println!("{}", prova);
-
     return sql_fields
         .iter()
         .map(|x| translate_sql_to_java_type(x.to_string()))
@@ -53,11 +50,16 @@ fn translate_sql_to_java_type(row: String) -> String {
     };
 
     if java_type == "A" {
-        return String::from("");
+        return String::from(
+            row_vec[2]
+                .replace("`", "")
+                .replace("(", "")
+                .replace(")", ""),
+        );
     }
 
     return format!(
-        "   private {} {}\n",
+        "   private {} {};\n",
         java_type,
         String::from(row_vec[0].replace("`", ""))
     );
