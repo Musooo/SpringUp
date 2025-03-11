@@ -12,7 +12,7 @@ pub fn get_group_id_slash(group_id: String) -> String {
     return group_ids;
 }
 
-pub fn create_files(group_id: &String, artifact_id: &String, name: String) {
+pub fn create_files(group_id: &String, artifact_id: &String, name: String, model_text: String) {
     let group_ids: String = get_group_id_slash(group_id.clone());
     fs::write(
         format!(
@@ -20,7 +20,7 @@ pub fn create_files(group_id: &String, artifact_id: &String, name: String) {
             dir_path(&group_ids, artifact_id, "model"),
             name
         ),
-        format!("package {}.{}.model;\n\nimport jakarta.persistence.Entity;\nimport jakarta.persistence.Id;\nimport jakarta.persistence.Table;\nimport lombok.AllArgsConstructor;\nimport lombok.Getter;\nimport lombok.NoArgsConstructor;\nimport lombok.Setter;\n\n@Entity\n@Getter\n@Setter\n@AllArgsConstructor\n@NoArgsConstructor\n@Table(name = \"{}\")\n\npublic class {} {{}}", group_id, artifact_id, name, name),)
+        format!("package {}.{}.model;\n\nimport jakarta.persistence.Entity;\nimport jakarta.persistence.Id;\nimport jakarta.persistence.Table;\nimport lombok.AllArgsConstructor;\nimport lombok.Getter;\nimport lombok.NoArgsConstructor;\nimport lombok.Setter;\n\n@Entity\n@Getter\n@Setter\n@AllArgsConstructor\n@NoArgsConstructor\n@Table(name = \"{}\")\n\npublic class {} {{\n{}}}", group_id, artifact_id, name.to_lowercase(), name, model_text),)
     .expect("fallito creare il file model");
     fs::write(
         format!(
