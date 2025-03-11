@@ -42,14 +42,14 @@ fn main() {
                 println!("create dir");
                 let (group_id, artifact_id) = read_saka();
                 let group_ids: String = javafile::get_group_id_slash(group_id);
-                dir::create_dir(group_ids, artifact_id);
+                dir::create_dir(&group_ids, &artifact_id);
             }
             "-s" => {
                 if argv.len() < i + 2 {
                     println!("not enough args for -s");
                     return;
                 }
-                let _ = pom::set_ids(argv[i + 1].clone(), argv[i + 2].clone(), conf_file!());
+                let _ = pom::set_ids(&argv[i + 1], &argv[i + 2], conf_file!());
                 i += 2;
             }
             "-f" => {
@@ -61,7 +61,7 @@ fn main() {
             _ => {
                 println!("{}", argv[i]);
                 let (group_id, artifact_id) = read_saka();
-                javafile::create_files(group_id, artifact_id, argv[i].clone());
+                javafile::create_files(&group_id, &artifact_id, argv[i].clone());
             }
         }
 

@@ -1,7 +1,7 @@
 use std::fs::DirBuilder;
 
 #[cfg(any(target_os = "linux", target_os = "macos"))]
-pub fn dir_path(groud_id: String, artifact_id: String, dir: &str) -> String {
+pub fn dir_path(groud_id: &String, artifact_id: &String, dir: &str) -> String {
     format!("{}/{}/{}/{}/", "src/main/java", groud_id, artifact_id, dir)
 }
 
@@ -13,30 +13,22 @@ pub fn dir_path(groud_id: String, artifact_id: String, dir: &str) -> String {
     )
 }
 
-pub fn create_dir(groud_id: String, artifact_id: String) {
+pub fn create_dir(groud_id: &String, artifact_id: &String) {
     //dir_path(groud_id, artifact_id)
     DirBuilder::new()
         .recursive(true)
-        .create(dir_path(
-            groud_id.clone(),
-            artifact_id.clone(),
-            "controller",
-        ))
+        .create(dir_path(groud_id, artifact_id, "controller"))
         .unwrap();
     DirBuilder::new()
         .recursive(true)
-        .create(dir_path(groud_id.clone(), artifact_id.clone(), "model"))
+        .create(dir_path(groud_id, artifact_id, "model"))
         .unwrap();
     DirBuilder::new()
         .recursive(true)
-        .create(dir_path(
-            groud_id.clone(),
-            artifact_id.clone(),
-            "repository",
-        ))
+        .create(dir_path(groud_id, artifact_id, "repository"))
         .unwrap();
     DirBuilder::new()
         .recursive(true)
-        .create(dir_path(groud_id.clone(), artifact_id.clone(), "service"))
+        .create(dir_path(groud_id, artifact_id, "service"))
         .unwrap();
 }

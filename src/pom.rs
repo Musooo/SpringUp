@@ -1,6 +1,6 @@
 use std::fs;
 
-pub fn set_ids(group_id: String, artifact_id: String, conf_file: &str) -> std::io::Result<()> {
+pub fn set_ids(group_id: &String, artifact_id: &String, conf_file: &str) -> std::io::Result<()> {
     fs::write(conf_file, format!("{}\n{}\n", group_id, artifact_id))?;
     Ok(())
 }
