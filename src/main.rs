@@ -3,6 +3,7 @@ mod pom;
 use std::fs;
 mod dir;
 mod javafile;
+mod sqldb;
 mod sqlf;
 
 macro_rules! conf_file {
@@ -66,7 +67,10 @@ fn main() {
                     if argv[i + 2] == "-t" {
                         type_tab = sqlf::read_from_sql(argv[i + 3].clone(), argv[i + 1].clone());
                         tabel_name_different_and_name_given = true;
-                    } else {
+                    }else if  argv[i + 2] == "-db"{
+                        type_tab = sqldb::connect_db(argv[i + 1].to_lowercase().clone());
+                        tabel_name_different_and_name_given = true;
+                    }else {
                         println!("no .sql file name gave");
                         type_tab =
                             sqlf::read_from_sql(String::from("init.sql"), argv[i + 1].clone());

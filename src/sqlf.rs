@@ -31,7 +31,7 @@ pub fn read_from_sql(file_name: String, table_name: String) -> Vec<String> {
         .collect();
 }
 
-fn translate_sql_to_java_type(row: String) -> String {
+pub fn translate_sql_to_java_type(row: String) -> String {
     let row_vec: Vec<&str> = row.split(" ").collect();
     /*
     for l in &row_vec {

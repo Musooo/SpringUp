@@ -4,3 +4,4 @@
 *.saka
 *.xml
 *.sql
+docker-compose.yml
