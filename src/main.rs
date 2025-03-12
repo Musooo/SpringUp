@@ -54,16 +54,31 @@ fn main() {
             }
             "-f" => {
                 let mut type_tab: Vec<String>;
-                type_tab =
-                    sqlf::read_from_sql(String::from("init.sql"), argv[i + 1].to_lowercase());
+                type_tab = sqlf::read_from_sql(String::from("init.sql"), argv[i + 1].clone());
+                let mut id_type = String::from("Tipo");
 
                 for i in 0..type_tab.len() {
                     if type_tab[i].contains(&type_tab[type_tab.len() - 1]) {
                         if i == 0 {
                             type_tab.insert(0, String::from("   @Id\n"));
+                            let id_vec: Vec<String> = type_tab[i + 1]
+                                .clone()
+                                .trim_start()
+                                .split(" ")
+                                .map(String::from)
+                                .collect();
+                            id_type = id_vec[1].clone();
                             break;
                         }
                         type_tab.insert(i - 1, String::from("   @Id\n"));
+                        let id_vec: Vec<String> = type_tab[i + 1]
+                                .clone()
+                                .trim_start()
+                                .split(" ")
+                                .map(String::from)
+                                .collect();
+                        id_type = id_vec[1].clone();
+                        break;
                     }
                 }
 
@@ -71,14 +86,26 @@ fn main() {
 
                 let text: String = type_tab.into_iter().collect();
                 let (group_id, artifact_id) = read_saka();
-                javafile::create_files(&group_id, &artifact_id, argv[i + 1].clone(), text);
+                javafile::create_files(
+                    &group_id,
+                    &artifact_id,
+                    argv[i + 1].clone(),
+                    text,
+                    &id_type,
+                );
 
                 i += 1;
             }
             _ => {
                 println!("{}", argv[i]);
                 let (group_id, artifact_id) = read_saka();
-                javafile::create_files(&group_id, &artifact_id, argv[i].clone(), String::from(""));
+                javafile::create_files(
+                    &group_id,
+                    &artifact_id,
+                    argv[i].clone(),
+                    String::from(""),
+                    &String::from("Tipo"),
+                );
             }
         }
 

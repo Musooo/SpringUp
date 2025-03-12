@@ -13,7 +13,8 @@ pub fn read_from_sql(file_name: String, table_name: String) -> Vec<String> {
     let mut cond: bool = false;
 
     while type_tab.len() != i {
-        if type_tab[i].contains(&"CREATE TABLE") && type_tab[i].contains(&table_name) {
+        if type_tab[i].contains(&"CREATE TABLE") && type_tab[i].contains(&table_name.to_lowercase())
+        {
             cond = true;
         } else if cond {
             if type_tab[i].contains(&";") {
