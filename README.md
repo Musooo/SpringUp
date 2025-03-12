@@ -1,6 +1,7 @@
 # SpringUp
 
-## Still working progress project !!!
+![SpringUp Logo](resource/SpringUp.png)
+
 
 ### Features that should work:  
     [X] Manually setting the groupId and artifactId  
