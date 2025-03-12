@@ -61,22 +61,15 @@ fn main() {
                     if type_tab[i].contains(&type_tab[type_tab.len() - 1]) {
                         if i == 0 {
                             type_tab.insert(0, String::from("   @Id\n"));
-                            let id_vec: Vec<String> = type_tab[i + 1]
-                                .clone()
-                                .trim_start()
-                                .split(" ")
-                                .map(String::from)
-                                .collect();
-                            id_type = id_vec[1].clone();
-                            break;
+                        } else {
+                            type_tab.insert(i - 1, String::from("   @Id\n"));
                         }
-                        type_tab.insert(i - 1, String::from("   @Id\n"));
                         let id_vec: Vec<String> = type_tab[i + 1]
-                                .clone()
-                                .trim_start()
-                                .split(" ")
-                                .map(String::from)
-                                .collect();
+                            .clone()
+                            .trim_start()
+                            .split(" ")
+                            .map(String::from)
+                            .collect();
                         id_type = id_vec[1].clone();
                         break;
                     }
