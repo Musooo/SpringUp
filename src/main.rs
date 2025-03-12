@@ -53,18 +53,37 @@ fn main() {
                 i += 2;
             }
             "-f" => {
+                let mut tabel_name_different: bool = false;
+                let mut tabel_name_different_and_name_given: bool = false;
+
                 let mut type_tab: Vec<String>;
-                type_tab = sqlf::read_from_sql(String::from("init.sql"), argv[i + 1].clone());
+                if argv.len() <= i + 1 {
+                    println!("missing the name");
+                    return;
+                } else if argv.len() <= i + 2 {
+                    type_tab = sqlf::read_from_sql(String::from("init.sql"), argv[i + 1].clone());
+                } else {
+                    if argv[i + 2] == "-t" {
+                        type_tab = sqlf::read_from_sql(argv[i + 3].clone(), argv[i + 1].clone());
+                        tabel_name_different_and_name_given = true;
+                    } else {
+                        println!("no .sql file name gave");
+                        type_tab =
+                            sqlf::read_from_sql(String::from("init.sql"), argv[i + 1].clone());
+                    }
+                    tabel_name_different = true;
+                }
+                //type_tab = sqlf::read_from_sql(String::from("init.sql"), argv[i + 1].clone());
                 let mut id_type = String::from("Tipo");
 
-                for i in 0..type_tab.len() {
-                    if type_tab[i].contains(&type_tab[type_tab.len() - 1]) {
-                        if i == 0 {
+                for j in 0..type_tab.len() {
+                    if type_tab[j].contains(&type_tab[type_tab.len() - 1]) {
+                        if j == 0 {
                             type_tab.insert(0, String::from("   @Id\n"));
                         } else {
-                            type_tab.insert(i - 1, String::from("   @Id\n"));
+                            type_tab.insert(j - 1, String::from("   @Id\n"));
                         }
-                        let id_vec: Vec<String> = type_tab[i + 1]
+                        let id_vec: Vec<String> = type_tab[j + 1]
                             .clone()
                             .trim_start()
                             .split(" ")
@@ -86,7 +105,12 @@ fn main() {
                     text,
                     &id_type,
                 );
-
+                if tabel_name_different {
+                    i += 1
+                };
+                if tabel_name_different_and_name_given {
+                    i += 1
+                };
                 i += 1;
             }
             _ => {
