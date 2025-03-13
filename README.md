@@ -33,6 +33,11 @@
     spb-utils-rust -f MyModel -t custom.sql
     ```
 
+- `-f <name> -dbs <username> <password> <host> <database>`: Creates model files with SQL attributes by connecting to the specified database.
+    ```sh
+    spb-utils-rust -f MyModel -dbs username password host database
+    ```
+
 #### Examples
 
 - Display help information:
@@ -63,4 +68,9 @@
 - Create model files with SQL attributes from a custom SQL file:
     ```sh
     spb-utils-rust -f MyModel -t custom.sql
+    ```
+
+- Create model files with SQL attributes by connecting to the specified database:
+    ```sh
+    spb-utils-rust -f MyModel -dbs username password localhost:3306 database
     ```

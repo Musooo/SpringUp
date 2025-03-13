@@ -56,6 +56,7 @@ fn main() {
             "-f" => {
                 let mut tabel_name_different: bool = false;
                 let mut tabel_name_different_and_name_given: bool = false;
+                let mut db_settings: bool = false;
 
                 let mut type_tab: Vec<String>;
                 if argv.len() <= i + 1 {
@@ -67,10 +68,26 @@ fn main() {
                     if argv[i + 2] == "-t" {
                         type_tab = sqlf::read_from_sql(argv[i + 3].clone(), argv[i + 1].clone());
                         tabel_name_different_and_name_given = true;
-                    }else if  argv[i + 2] == "-db"{
-                        type_tab = sqldb::connect_db(argv[i + 1].to_lowercase().clone());
+                    } else if argv[i + 2] == "-db" {
+                        type_tab = sqldb::connect_db(
+                            argv[i + 1].to_lowercase().clone(),
+                            "root".to_string(),
+                            "root".to_string(),
+                            "localhost:3306".to_string(),
+                            "noleggiofilm".to_string(),
+                        );
                         tabel_name_different_and_name_given = true;
-                    }else {
+                    } else if argv[i + 2] == "-dbs" {
+                        type_tab = sqldb::connect_db(
+                            argv[i + 1].to_lowercase().clone(),
+                            argv[i + 3].clone(),
+                            argv[i + 4].clone(),
+                            argv[i + 5].clone(),
+                            argv[i + 6].clone(),
+                        );
+                        tabel_name_different_and_name_given = true;
+                        db_settings = true;
+                    } else {
                         println!("no .sql file name gave");
                         type_tab =
                             sqlf::read_from_sql(String::from("init.sql"), argv[i + 1].clone());
@@ -114,6 +131,9 @@ fn main() {
                 };
                 if tabel_name_different_and_name_given {
                     i += 1
+                };
+                if db_settings {
+                    i += 4
                 };
                 i += 1;
             }

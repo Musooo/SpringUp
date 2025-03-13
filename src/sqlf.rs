@@ -43,6 +43,7 @@ pub fn translate_sql_to_java_type(row: String) -> String {
         x if x.contains("varchar") => "String",
         x if x.contains("int") => "Integer",
         x if x.contains("bool") => "Boolean",
+        x if x.contains("date") => "java.sql.Date",
         x if x.contains("KEY") => "A",
         _ => {
             println!("{}", row_vec[1]);
