@@ -40,10 +40,10 @@ pub fn translate_sql_to_java_type(row: String) -> String {
     }*/
 
     let java_type = match String::from(row_vec[1]) {
-        x if x.contains("varchar") => "String",
-        x if x.contains("int") => "Integer",
-        x if x.contains("bool") => "Boolean",
-        x if x.contains("date") => "java.sql.Date",
+        x if x.starts_with("varchar") => "String",
+        x if x.starts_with("int") => "Integer",
+        x if x.starts_with("bool") => "Boolean",
+        x if x.starts_with("date") => "java.sql.Date",
         x if x.contains("KEY") => "A",
         _ => {
             println!("{}", row_vec[1]);
